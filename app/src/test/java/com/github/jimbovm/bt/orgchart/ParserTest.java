@@ -2,6 +2,10 @@ package com.github.jimbovm.bt.orgchart;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.InputStream;
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -36,5 +40,30 @@ public class ParserTest {
 		assertEquals(expectedId, employee.id());
 		assertEquals(expectedName, employee.name());
 		assertEquals(expectedManager, employee.manager());
+	}
+
+	/**
+	 * Test parsing a complete org chart file, using a test resource.
+	 */
+	@Test
+	void testParseFile() throws Exception {
+		final List<EmployeeRecord> expectedRecords = List.of(
+				new EmployeeRecord(1, "Dangermouse", 1),
+				new EmployeeRecord(2, "Gonzo the Great", 1),
+				new EmployeeRecord(3, "Invisible Woman", 1),
+				new EmployeeRecord(6, "Black Widow", 2),
+				new EmployeeRecord(12, "Hit Girl", 3),
+				new EmployeeRecord(15, "Super Ted", 3),
+				new EmployeeRecord(16, "Batman", 6),
+				new EmployeeRecord(17, "Catwoman", 6));
+
+		InputStream inputStream = this.getClass().getResourceAsStream("/superheroes.txt");
+		{
+			var records = Parser.parse(inputStream);
+			assertEquals(8, records.size());
+			for (int i = 0; i < records.size(); i++) {
+				assertEquals(expectedRecords.get(i), records.get(i));
+			}
+		}
 	}
 }
