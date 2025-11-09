@@ -4,6 +4,8 @@
  * This generated file contains a sample Java application project to get you started.
  * For more details on building Java & JVM projects, please refer to https://docs.gradle.org/9.0.0/userguide/building_java_projects.html in the Gradle documentation.
  */
+ 
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
@@ -42,5 +44,7 @@ tasks.named<Test>("test") {
     useJUnitPlatform()
     testLogging {
         events("passed", "skipped", "failed", "standardOut", "standardError")
+	showStackTraces = true
+	exceptionFormat = TestExceptionFormat.FULL
     }
 }
