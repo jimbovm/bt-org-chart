@@ -36,7 +36,7 @@ public class ParserTest {
 	})
 	void testParseLine(String line, int expectedId, String expectedName, int expectedManager) throws Exception {
 
-		EmployeeRecord employee = Parser.parseLine(line);
+		Employee employee = Parser.parseLine(line);
 		assertEquals(expectedId, employee.id());
 		assertEquals(expectedName, employee.name());
 		assertEquals(expectedManager, employee.manager());
@@ -47,15 +47,15 @@ public class ParserTest {
 	 */
 	@Test
 	void testParseFile() throws Exception {
-		final List<EmployeeRecord> expectedRecords = List.of(
-				new EmployeeRecord(1, "Dangermouse", 1),
-				new EmployeeRecord(2, "Gonzo the Great", 1),
-				new EmployeeRecord(3, "Invisible Woman", 1),
-				new EmployeeRecord(6, "Black Widow", 2),
-				new EmployeeRecord(12, "Hit Girl", 3),
-				new EmployeeRecord(15, "Super Ted", 3),
-				new EmployeeRecord(16, "Batman", 6),
-				new EmployeeRecord(17, "Catwoman", 6));
+		final List<Employee> expectedRecords = List.of(
+				new Employee(1, "Dangermouse", 1),
+				new Employee(2, "Gonzo the Great", 1),
+				new Employee(3, "Invisible Woman", 1),
+				new Employee(6, "Black Widow", 2),
+				new Employee(12, "Hit Girl", 3),
+				new Employee(15, "Super Ted", 3),
+				new Employee(16, "Batman", 6),
+				new Employee(17, "Catwoman", 6));
 
 		InputStream inputStream = this.getClass().getResourceAsStream("/superheroes.txt");
 		{
