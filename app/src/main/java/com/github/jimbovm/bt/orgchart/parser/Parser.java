@@ -30,12 +30,13 @@ public final class Parser {
 	private static Logger logger;
 
 	static {
-		HEADER_PATTERN = Pattern.compile("^\\s*\\|\\s*Header\\s*\\|\\s*Name\\s*\\|\\s*Manager ID\\s*\\|$");
+		HEADER_PATTERN = Pattern.compile(
+				"^\\s*\\|\\s*Employee ID\\s*\\|\\s*Name\\s*\\|\\s*Manager ID\\s*\\|\\s*$",
+				Pattern.UNICODE_CHARACTER_CLASS | Pattern.UNICODE_CASE);
 		ENTRY_PATTERN = Pattern.compile(
 				"^\\s*\\|\\s*(?<id>\\-?\\d+)\\s*\\|\\s*(?<name>[\\-\\w\\s]+)\\s*\\|\\s*(?<manager>\\d*)\\s*\\|\\s*$",
 				Pattern.UNICODE_CHARACTER_CLASS | Pattern.UNICODE_CASE);
 		logger = Logger.getGlobal();
-		// logger.addHandler(new ConsoleHandler());
 	}
 
 	/**
@@ -127,6 +128,21 @@ public final class Parser {
 		return records;
 	}
 
+	private static boolean hasValidHeader(Stream<String> stream) {
+
+		final String firstLine = stream.findFirst().orElseGet(null);
+		if (firstLine == null) {
+			return false;
+		}
+
+		final var headerMatcher = HEADER_PATTERN.matcher(firstLine);
+
+		logger.info(String.format("Parsed %s header %s", headerMatcher.matches() ? "valid" : "invalid",
+				firstLine));
+
+		return headerMatcher.matches();
+	}
+
 	/**
 	 * Parse an employee file from an InputStream.
 	 * 
@@ -136,8 +152,16 @@ public final class Parser {
 	 */
 	public static List<Employee> parse(InputStream inputStream) throws IOException {
 
+		inputStream.mark(0);
 		var stream = getStream(inputStream);
-		return parseLines(stream);
+
+		if (hasValidHeader(stream)) {
+			inputStream.reset();
+			stream = getStream(inputStream);
+			return parseLines(stream);
+		} else {
+			throw new IOException("Malformed input file: no header or header format incorrect");
+		}
 	}
 
 	/**
@@ -150,6 +174,12 @@ public final class Parser {
 	public static List<Employee> parse(String filePath) throws IOException {
 
 		var stream = getFileAsStream(filePath);
-		return parseLines(stream);
+
+		if (hasValidHeader(stream)) {
+			stream = getFileAsStream(filePath);
+			return parseLines(stream);
+		} else {
+			throw new IOException("Malformed input file: no header or header format incorrect");
+		}
 	}
 }
