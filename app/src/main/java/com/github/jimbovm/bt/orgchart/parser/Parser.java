@@ -20,6 +20,9 @@ import com.github.jimbovm.bt.orgchart.Employee;
  */
 public final class Parser {
 
+	/** Regular expression for a valid file header. */
+	private static final Pattern HEADER_PATTERN;
+
 	/** Regular expression for a valid line. */
 	private static final Pattern ENTRY_PATTERN;
 
@@ -27,8 +30,9 @@ public final class Parser {
 	private static Logger logger;
 
 	static {
+		HEADER_PATTERN = Pattern.compile("^\\s*\\|\\s*Header\\s*\\|\\s*Name\\s*\\|\\s*Manager ID\\s*\\|$");
 		ENTRY_PATTERN = Pattern.compile(
-				"^\\s*\\|\\s*(?<id>\\d+)\\s*\\|\\s*(?<name>[\\-\\w\\s]+)\\s*\\|\\s*(?<manager>\\d*)\\s*\\|\\s*$",
+				"^\\s*\\|\\s*(?<id>\\-?\\d+)\\s*\\|\\s*(?<name>[\\-\\w\\s]+)\\s*\\|\\s*(?<manager>\\d*)\\s*\\|\\s*$",
 				Pattern.UNICODE_CHARACTER_CLASS | Pattern.UNICODE_CASE);
 		logger = Logger.getGlobal();
 		// logger.addHandler(new ConsoleHandler());
