@@ -2,6 +2,7 @@ package com.github.jimbovm.bt.orgchart;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class ParserTest {
 				new Employee(16, "Batman", 6),
 				new Employee(17, "Catwoman", 6));
 
-		InputStream inputStream = this.getClass().getResourceAsStream("/superheroes.txt");
+		var inputStream = this.getClass().getResourceAsStream("/superheroes.txt");
 		{
 			var records = Parser.parse(inputStream);
 			assertEquals(8, records.size());
@@ -65,5 +66,22 @@ public class ParserTest {
 				assertEquals(expectedRecords.get(i), records.get(i));
 			}
 		}
+	}
+
+	@CsvSource({
+			"/valid_header_1.txt",
+			"/valid_header_2.txt",
+			"/valid_header_3.txt"
+	})
+	@ParameterizedTest
+	void testValidHeaderVariants(String resourcePath) {
+		var inputStream = this.getClass().getResourceAsStream(resourcePath);
+		assertDoesNotThrow(() -> Parser.parse(inputStream));
+	}
+
+	@Test
+	void testInvalidHeader() {
+		var inputStream = this.getClass().getResourceAsStream("/invalid_header.txt");
+		assertThrows(IOException.class, () -> Parser.parse(inputStream));
 	}
 }

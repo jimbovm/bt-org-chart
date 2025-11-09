@@ -1,0 +1,2 @@
+This file has an invalid header
+|0|Mario||

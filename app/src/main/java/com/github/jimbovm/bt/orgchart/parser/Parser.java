@@ -137,7 +137,7 @@ public final class Parser {
 
 		final var headerMatcher = HEADER_PATTERN.matcher(firstLine);
 
-		logger.info(String.format("Parsed %s header %s", headerMatcher.matches() ? "valid" : "invalid",
+		logger.info(String.format("Parsed %s header \"%s\"", headerMatcher.matches() ? "valid" : "invalid",
 				firstLine));
 
 		return headerMatcher.matches();
