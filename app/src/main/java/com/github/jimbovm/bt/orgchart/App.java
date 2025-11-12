@@ -138,23 +138,32 @@ public final class App {
 		try {
 			List<Employee> employees = Parser.parse(filePath);
 			Hierarchy hierarchy = Hierarchy.of(employees);
-			PathFinder pathFinder = new PathFinder(hierarchy);
 
-			Optional<Employee> employee1 = employees.stream()
+			List<Employee> employees1 = employees.stream()
 					.filter(employee -> normalizeName(employee.name())
 							.equalsIgnoreCase(firstEmployeeName))
-					.findFirst();
+					.toList();
 
-			Optional<Employee> employee2 = employees.stream()
+			List<Employee> employees2 = employees.stream()
 					.filter(employee -> normalizeName(employee.name())
 							.equalsIgnoreCase(secondEmployeeName))
-					.findFirst();
+					.toList();
 
-			checkEmployeesFound(args, employee1, employee2);
+			if (employees1.isEmpty() || employees2.isEmpty()) {
+				System.err.println("One or more supplied employee names not found.");
+				System.exit(EXIT_FAILURE);
+			}
 
 			// if we're here, we have valid input
-			pathFinder.findShortestPath(employee1.get(), employee2.get());
-			System.out.println(pathFinder.toString());
+			for (var employee1 : employees1) {
+				for (var employee2 : employees2) {
+					PathFinder pathFinder = new PathFinder(hierarchy);
+					logger.info(String.format("Searching for path between %s and %s",
+							employee1.toString(), employee2.toString()));
+					pathFinder.findShortestPath(employee1, employee2);
+					System.out.println(pathFinder.toString());
+				}
+			}
 
 			System.exit(EXIT_SUCCESS);
 
