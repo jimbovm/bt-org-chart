@@ -2,6 +2,7 @@ package com.github.jimbovm.bt.orgchart;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -15,6 +16,10 @@ public final class HierarchyTest {
 			new Employee(2, "Toad", 0),
 			new Employee(10, "Toadette", 0),
 			new Employee(64, "Kooper", 2));
+
+	private final List<Employee> multipleChiefs = List.of(
+			new Employee(1, "Chief 1", 1),
+			new Employee(2, "Chief 2", 2));
 
 	@Test
 	void testBuildHierarchy() throws Exception {
@@ -35,5 +40,20 @@ public final class HierarchyTest {
 		assertTrue(PEACH_ORGANISATION.isDirectReport(TOADETTE));
 		assertTrue(TEAM_TOAD.isDirectReport(KOOPER));
 		assertFalse(TEAM_TOAD.isDirectReport(TOADETTE));
+	}
+
+	@SuppressWarnings("unused")
+	@Test
+	void testFailOnMultipleChiefs() throws Exception {
+
+		assertThrows(IllegalArgumentException.class, () -> {
+			Hierarchy hierarchy = Hierarchy.of(multipleChiefs);
+		});
+	}
+
+	@Test
+	void testToStringOnEmpty() throws Exception {
+
+		assertEquals("Empty organisation", Hierarchy.of(List.of()).toString());
 	}
 }
