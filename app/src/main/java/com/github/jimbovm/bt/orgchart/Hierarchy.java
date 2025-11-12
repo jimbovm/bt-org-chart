@@ -80,7 +80,7 @@ public final class Hierarchy {
 
 			if (employeeIsReport && !(employeeIsBoss)) {
 
-				logger.info(String.format("Employee %s (%d) reports to %s (%d)", employee.name(),
+				logger.fine(String.format("Employee %s (%d) reports to %s (%d)", employee.name(),
 						employee.id(), manager.name(), manager.id()));
 
 				var reports = buildHierarchy(employees, employee);
