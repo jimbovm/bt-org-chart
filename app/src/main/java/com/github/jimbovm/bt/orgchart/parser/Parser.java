@@ -34,7 +34,7 @@ public final class Parser {
 				"^\\s*\\|\\s*Employee ID\\s*\\|\\s*Name\\s*\\|\\s*Manager ID\\s*\\|\\s*$",
 				Pattern.UNICODE_CHARACTER_CLASS | Pattern.UNICODE_CASE);
 		ENTRY_PATTERN = Pattern.compile(
-				"^\\s*\\|\\s*(?<id>\\-?\\d+)\\s*\\|\\s*(?<name>[\\-\\w\\s]+)\\s*\\|\\s*(?<manager>\\d*)\\s*\\|\\s*$",
+				"^\\s*\\|\\s*(?<id>\\-?\\d+)\\s*\\|\\s*(?<name>[\\'\\-\\w\\s]+)\\s*\\|\\s*(?<manager>(\\-?\\d+)?)\\s*\\|\\s*$",
 				Pattern.UNICODE_CHARACTER_CLASS | Pattern.UNICODE_CASE);
 		logger = Logger.getGlobal();
 	}
@@ -82,7 +82,11 @@ public final class Parser {
 	public static Employee parseLine(String line) throws IllegalArgumentException {
 
 		var matcher = ENTRY_PATTERN.matcher(line);
-		matcher.find();
+		final var validMatch = matcher.find();
+
+		if (validMatch == false) {
+			throw new IllegalArgumentException(String.format("Malformed line: %s", line));
+		}
 
 		final int id;
 		try {
