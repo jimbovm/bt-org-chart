@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 /**
- * Encapsulates functionality for finding a the highest-ranked common manager in
+ * Encapsulates functionality for finding a the lowest-ranked common manager in
  * an organisation hierarchy.
  * 
  * This problem is equivalent to finding the "lowest common ancestor" in a tree,
@@ -43,11 +43,11 @@ public final class PathFinder {
 	/**
 	 * Use the Lowest Common Ancestor algorithm to find the paths from the big boss
 	 * to each employee, then determine the point in the hierarchy where these paths
-	 * diverge, i.e. their highest-ranked common manager.
+	 * diverge, i.e. their lowest-ranked common manager.
 	 * 
-	 * @param employee1 The first employee to find a path to the highest-ranked
+	 * @param employee1 The first employee to find a path to the lowest-ranked
 	 *                  manager starting from.
-	 * @param employee2 The second employee to find a path to the highest-ranked
+	 * @param employee2 The second employee to find a path to the lowest-ranked
 	 *                  manager starting from.
 	 */
 	public void findShortestPath(Employee employee1, Employee employee2) {
