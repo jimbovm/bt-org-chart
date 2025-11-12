@@ -17,17 +17,13 @@ import java.util.logging.Logger;
 public final class Hierarchy {
 
 	/** Logger implementation. */
-	private static Logger logger;
+	private static Logger logger = Logger.getGlobal();
 
 	/** The employee represented by this node in the hierarchy. */
 	private Optional<Employee> employee = Optional.empty();
 
 	/** Direct reports to the employee at this node; may be empty. */
 	private List<Hierarchy> reports = new ArrayList<Hierarchy>();
-
-	static {
-		logger = Logger.getGlobal();
-	}
 
 	/**
 	 * Create a Hierarchy from a list of employees.
@@ -51,8 +47,11 @@ public final class Hierarchy {
 				.filter(employee -> employee.id() == employee.manager())
 				.toList();
 		if (chiefs.size() > 1) {
-			throw new IllegalArgumentException(
-					"Multiple chiefs; only one employee may be answerable to no one (this is an assumption; see README)");
+			final var message1 = "Multiple chiefs; only one employee may be answerable to no one (this is an assumption; see README)\n";
+			final var multipleChiefs = employees.stream()
+					.filter(employee -> employee.id() == employee.manager()).toList();
+			final var message2 = String.format("Employees %s are all chiefs", multipleChiefs.toString());
+			throw new IllegalArgumentException(message1 + message2);
 		}
 
 		// if we're here, we have one chief as required
