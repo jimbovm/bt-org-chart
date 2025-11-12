@@ -9,6 +9,9 @@ import java.util.regex.Pattern;
 
 import com.github.jimbovm.bt.orgchart.parser.Parser;
 
+/**
+ * Executable class for the org chart app.
+ */
 public final class App {
 
 	/** Return code to exit with on a successful result. */
@@ -60,6 +63,15 @@ public final class App {
 		return whitespaceNormalizedString.strip().replaceAll("\\s+", " ").toLowerCase();
 	}
 
+	/**
+	 * Checks if a list of Employee instances has at least one instance of an
+	 * employee with a supplied name.
+	 * 
+	 * @param employees A list of Employee instances.
+	 * @param name      A name, which is normalized, which the employee list is
+	 *                  search for.
+	 * @return True if the condition is met, false otherwise.
+	 */
 	public static boolean containsName(List<Employee> employees, String name) {
 		return employees.stream().anyMatch(employee -> normalizeName(employee.name()) == name);
 	}
@@ -116,7 +128,7 @@ public final class App {
 	 * 
 	 * @param args The command line arguments; input file path, employee 1 and
 	 *             employee 2, in that order.
-	 * @throws Exception
+	 * @throws Exception in the event of a miscellaneous error.
 	 */
 	public static void main(String[] args) throws Exception {
 
