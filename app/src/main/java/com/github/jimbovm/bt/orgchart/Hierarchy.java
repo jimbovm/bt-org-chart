@@ -34,7 +34,9 @@ public final class Hierarchy {
 	 * 
 	 * @param employees A list of Employee records.
 	 * @return The organisational hierarchy with the chief at the root.
-	 * @throws IllegalArgumentException
+	 * @throws IllegalArgumentException in the event of a list of employees that
+	 *                                  contains multiple chiefs, i.e. employees
+	 *                                  that "manage themselves".
 	 */
 	public static Hierarchy of(List<Employee> employees) throws IllegalArgumentException {
 
@@ -94,21 +96,36 @@ public final class Hierarchy {
 	/**
 	 * Create a new, empty hierarchy.
 	 * Internal use only. Hierarchy must be substantiated using of().
-	 * 
-	 * @param employee
 	 */
 	private Hierarchy() {
 
 	}
 
+	/**
+	 * Return the employee at the head of the hierarchy.
+	 * 
+	 * @return An instance of Employee.
+	 */
 	public Optional<Employee> getEmployee() {
 		return employee;
 	}
 
+	/**
+	 * Return the employee at the head of the hierarchy's direct reports in the form
+	 * of sub-hierarchies.
+	 * 
+	 * @return A list of Hierarchy instances, which is empty if the employee is not
+	 *         a manager, i.e. no other employees report to them.
+	 */
 	public List<Hierarchy> getReports() {
 		return reports;
 	}
 
+	/**
+	 * Set the employee at the head of the hierarchy.
+	 * 
+	 * @param employee The employee to set as head of this hierarchy.
+	 */
 	public void setEmployee(Employee employee) {
 		this.employee = Optional.of(employee);
 	}
@@ -123,15 +140,36 @@ public final class Hierarchy {
 		this.reports.add(hierarchy);
 	}
 
+	/**
+	 * Set a full list of reports for the employee at the head of this hierarchy.
+	 * 
+	 * @param reports A list of Hierarchy instances.
+	 */
 	public void setReports(List<Hierarchy> reports) {
 		this.reports = reports;
 	}
 
+	/**
+	 * Return whether an employee reports directly the employee at the head of this
+	 * hierarchy.
+	 * 
+	 * @param employee The employee to check for direct reporting.
+	 * @return True if the employee is a direct report, false otherwise.
+	 */
 	public boolean isDirectReport(Employee employee) {
 		return (employee == null) || this.reports.stream().anyMatch(report -> report.getEmployee().isPresent()
 				&& report.getEmployee().get().equals(employee));
 	}
 
+	/**
+	 * Helper method for toString().
+	 * 
+	 * @param hierarchy The hierarchy to generate a recursive representation of.
+	 * @param builder   A StringBuilder instance.
+	 * @param depth     The depth of the nested hierarchy.
+	 * @return A StringBuilder instance into which a tree representation has been
+	 *         rendered.
+	 */
 	private StringBuilder toStringHelper(Hierarchy hierarchy, StringBuilder builder,
 			int depth) {
 
@@ -145,6 +183,11 @@ public final class Hierarchy {
 		return builder;
 	}
 
+	/**
+	 * Returns a representation of the hierarchy as a nested tree.
+	 * 
+	 * @return A tree representation of the hierarchy
+	 */
 	public String toString() {
 
 		var builder = new StringBuilder();
