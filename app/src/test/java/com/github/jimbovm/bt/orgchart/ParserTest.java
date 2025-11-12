@@ -15,7 +15,7 @@ import com.github.jimbovm.bt.orgchart.parser.Parser;
 /**
  * Test functionality for parsing employee records from input files.
  */
-public class ParserTest {
+public final class ParserTest {
 
 	/**
 	 * Test parsing of a single line.
