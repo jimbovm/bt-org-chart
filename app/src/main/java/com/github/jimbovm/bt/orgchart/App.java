@@ -53,7 +53,7 @@ public final class App {
 	 * @param name The name to normalize.
 	 * @return The normalized name.
 	 */
-	private static String normalizeName(String name) {
+	public static String normalizeName(String name) {
 
 		var whitespaceReplacementPattern = Pattern.compile("\s+",
 				Pattern.UNICODE_CASE | Pattern.UNICODE_CHARACTER_CLASS);
