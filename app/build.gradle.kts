@@ -71,3 +71,8 @@ tasks.test {
 tasks.jacocoTestReport {
 	dependsOn(tasks.test)
 }
+
+copy {
+    from(layout.buildDirectory.dir("docs/javadoc"))
+    into(layout.projectDirectory.dir("javadoc"))
+}
