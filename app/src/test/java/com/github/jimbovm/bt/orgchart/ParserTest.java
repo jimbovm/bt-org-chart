@@ -3,7 +3,6 @@ package com.github.jimbovm.bt.orgchart;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
