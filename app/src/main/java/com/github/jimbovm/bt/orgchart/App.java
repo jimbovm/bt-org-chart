@@ -7,27 +7,57 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import com.github.jimbovm.bt.orgchart.parser.Parser;
 
 public final class App {
 
+	static {
+		System.setProperty("java.util.logging.config.file", "logging.properties");
+	}
+
+	/** Return code to exit with on a successful result. */
 	private static final int EXIT_SUCCESS = 0;
+
+	/** Return code to exit on in the event of an error. */
 	private static final int EXIT_FAILURE = 1;
 
+	/** Command line argument index to the path to the input file. */
 	private static final int FILE_PATH = 0;
+
+	/** Command line argument index to the first employee name. */
 	private static final int EMPLOYEE_1 = 1;
+
+	/** Command line argument index to the second employee name. */
 	private static final int EMPLOYEE_2 = 2;
 
-	public static String filePath;
+	/** Cached path to the input file. */
+	private static String filePath;
 
+	/** The normalized name of the first employee. */
 	private static String firstEmployeeName;
+
+	/** The normalized name of the second employee. */
 	private static String secondEmployeeName;
 
+	/** The global logger. */
 	private static Logger logger = Logger.getGlobal();
 
+	/**
+	 * Normalize a name by replacing all runs of whitespace with a single space,
+	 * 
+	 * @param name The name to normalize.
+	 * @return The normalized name.
+	 */
 	public static String normalizeName(String name) {
-		return name.strip().replaceAll("\s+", " ").toLowerCase();
+
+		var whitespaceReplacementPattern = Pattern.compile("\s+",
+				Pattern.UNICODE_CASE | Pattern.UNICODE_CHARACTER_CLASS);
+		var matcher = whitespaceReplacementPattern.matcher(name);
+
+		var whitespaceNormalizedString = matcher.replaceAll(name);
+		return whitespaceNormalizedString.strip().replaceAll("\\s+", " ").toLowerCase();
 	}
 
 	public static boolean containsName(List<Employee> employees, String name) {
