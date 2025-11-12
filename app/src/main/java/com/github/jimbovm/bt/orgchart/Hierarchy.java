@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  * them or, if the hierarchy is a leaf (i.e. the employee has no direct reports)
  * an individual contributor.
  */
-public class Hierarchy {
+public final class Hierarchy {
 
 	/** Logger implementation. */
 	private static Logger logger;
