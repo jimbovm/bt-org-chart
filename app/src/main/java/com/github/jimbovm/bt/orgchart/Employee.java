@@ -21,4 +21,8 @@ public record Employee(
 	public boolean manages(Optional<Employee> employee) {
 		return (employee.orNull() == null) || (this.manager() == employee.get().id());
 	}
+
+	public String toString() {
+		return String.format("%s (%d)", this.name, this.id);
+	}
 }
