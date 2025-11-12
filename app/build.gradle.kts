@@ -48,3 +48,9 @@ tasks.named<Test>("test") {
 	exceptionFormat = TestExceptionFormat.FULL
     }
 }
+
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = "com.github.jimbovm.bt.orgchart.App"
+    }
+}
