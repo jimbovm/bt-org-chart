@@ -1,0 +1,16 @@
+|	Employee ID 	|	Name		|	Manager ID	|
+|	0		|	Bowser		|			|
+|	-1		|	Kamek		|	0		|
+|	-2		|	Kammy		|	-1		|
+|	3		|	Roy		|	0		|
+|	100		|	Koopa Troopa	|	3		|
+|	907		|	Goomba		|	3		|
+|	171		|	Koopa Troopa	|	3		|
+|	180		|	Koopa Paratroopa|	3		|
+|	7		|	Morton		|	0		|
+|	10		|	Boom-Boom	|	7		|
+|	11		|	Pom-Pom		|	7		|
+|	201		|	Hammer Bro	|	10		|
+|	200		|	Hammer Bro	|	10		|
+|	700		|	Chargin Chuck	|	10		|
+|	1		|	Bowser Jr	|	0		|
