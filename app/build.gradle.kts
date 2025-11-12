@@ -8,8 +8,9 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 plugins {
-    // Apply the application plugin to add support for building a CLI application in Java.
     application
+    java
+    jacoco
 }
 
 repositories {
@@ -53,4 +54,20 @@ tasks.withType<Jar> {
     manifest {
         attributes["Main-Class"] = "com.github.jimbovm.bt.orgchart.App"
     }
+}
+
+tasks.withType<Javadoc> {
+    (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
+}
+
+tasks.build {
+	dependsOn(tasks.javadoc)
+}
+
+tasks.test {
+	finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+	dependsOn(tasks.test)
 }
