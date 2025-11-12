@@ -3,12 +3,86 @@
  */
 package com.github.jimbovm.bt.orgchart;
 
-public class App {
-	public String getGreeting() {
-	return "Hello World!";
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+import java.util.logging.Logger;
+
+import com.github.jimbovm.bt.orgchart.parser.Parser;
+
+public final class App {
+
+	private static final int EXIT_SUCCESS = 0;
+	private static final int EXIT_FAILURE = 1;
+
+	private static final int FILE_PATH = 0;
+	private static final int EMPLOYEE_1 = 1;
+	private static final int EMPLOYEE_2 = 2;
+
+	private static Logger logger = Logger.getGlobal();
+
+	public static String normalizeName(String name) {
+		return name.strip().replaceAll("\s+", " ").toLowerCase();
 	}
 
-	public static void main(String[] args) {
-	System.out.println(new App().getGreeting());
+	public static boolean containsName(List<Employee> employees, String name) {
+		return employees.stream().anyMatch(employee -> normalizeName(employee.name()) == name);
+	}
+
+	public static void main(String[] args) throws Exception {
+
+		if (args.length != 3) {
+			System.err.println("Wrong number of arguments.");
+			System.err.println("Usage: java -jar app.jar [input file] [employee name] [employee name]");
+			System.exit(EXIT_FAILURE);
+		}
+
+		final var filePath = args[FILE_PATH];
+		final String firstEmployeeName = normalizeName(args[EMPLOYEE_1]);
+		final String secondEmployeeName = normalizeName(args[EMPLOYEE_2]);
+
+		logger.info("Reading file " + filePath);
+		logger.info(String.format("Finding shortest path between \"%s\" (\"%s\") and \"%s\" (\"%s\")",
+				firstEmployeeName,
+				args[EMPLOYEE_1], secondEmployeeName, args[EMPLOYEE_2]));
+
+		try {
+
+			List<Employee> employees = Parser.parse(filePath);
+			Hierarchy hierarchy = Hierarchy.of(employees);
+			PathFinder pathFinder = new PathFinder(hierarchy);
+
+			Optional<Employee> employee1 = employees.stream()
+					.filter(employee -> employee.name().equalsIgnoreCase(firstEmployeeName))
+					.findFirst();
+
+			Optional<Employee> employee2 = employees.stream()
+					.filter(employee -> employee.name().equalsIgnoreCase(secondEmployeeName))
+					.findFirst();
+
+			if (employee1.isEmpty()) {
+				System.err.print(
+						String.format("First employee (name %s) not found", firstEmployeeName));
+				System.exit(EXIT_FAILURE);
+			} else {
+				logger.info(String.format("First employee (name %s) found", firstEmployeeName));
+			}
+
+			if (employee2.isEmpty()) {
+				System.err.print(String.format("Second employee (name %s) not found",
+						secondEmployeeName));
+				System.exit(EXIT_FAILURE);
+			} else {
+				logger.info(String.format("Second employee (name %s) found", secondEmployeeName));
+			}
+
+			pathFinder.findShortestPath(employee1.get(), employee2.get());
+			System.out.println(pathFinder.toString());
+			System.exit(EXIT_SUCCESS);
+
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+			System.exit(EXIT_FAILURE);
+		}
 	}
 }
