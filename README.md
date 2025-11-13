@@ -9,10 +9,11 @@
 ## Assumptions
 
 1. There can be only one "chief"/"big boss", or head of the organisation, and one head of any sub-hierarchy; that is, only a single employee at the root of the organisation hierarchy can be accountable to no one, and there is no job sharing between any employees who have direct reports.
-1. There may be no duplicate employee IDs in the input, and an employee may not have more than one manager.
+1. There may be no duplicate employee IDs in the input, and an employee may not have more than one manager (however, distinct employees may have the same name; see below).
 1. Any integer, including zero and negative numbers, may be an employee ID.
 1. Names of employees may only contain Unicode alphabet characters, hyphens and apostrophes.
 1. Input files must have a valid header of the form given in the example; the header names must be exactly as given in the example, but otherwise the header is whitespace-insensitive.
+1. When a hierarchy contains duplicate employee names, the program should print **all** paths between **all** employees with the same name. (The problem statement says that "you don't have to show" all such paths and "at least one" path should be printed, which I have interpreted as allowing this; I wished to include this functionality for completeness.)
 
 ## Building the software
 

@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public final class </span><span class="element-name type-name-label">PathFinder</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">Encapsulates functionality for finding a the highest-ranked common manager in
+<div class="block">Encapsulates functionality for finding a the lowest-ranked common manager in
  an organisation hierarchy.
  
  This problem is equivalent to finding the "lowest common ancestor" in a tree,
@@ -170,12 +170,12 @@ loadScripts(document, 'script');</script>
  <a href="Employee.html" title="class in com.github.jimbovm.bt.orgchart">Employee</a>&nbsp;employee2)</span></div>
 <div class="block">Use the Lowest Common Ancestor algorithm to find the paths from the big boss
  to each employee, then determine the point in the hierarchy where these paths
- diverge, i.e. their highest-ranked common manager.</div>
+ diverge, i.e. their lowest-ranked common manager.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>employee1</code> - The first employee to find a path to the highest-ranked
+<dd><code>employee1</code> - The first employee to find a path to the lowest-ranked
                   manager starting from.</dd>
-<dd><code>employee2</code> - The second employee to find a path to the highest-ranked
+<dd><code>employee2</code> - The second employee to find a path to the lowest-ranked
                   manager starting from.</dd>
 </dl>
 </section>
