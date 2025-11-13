@@ -2,7 +2,6 @@ package com.github.jimbovm.bt.orgchart;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -98,29 +97,6 @@ public final class App {
 		logger.info(String.format("Finding shortest path between \"%s\" (\"%s\") and \"%s\" (\"%s\")",
 				firstEmployeeName,
 				args[EMPLOYEE_1], secondEmployeeName, args[EMPLOYEE_2]));
-	}
-
-	/**
-	 * Check if looked-up employees exist in the input file, and exit if not.
-	 * 
-	 * @param args      The command line arguments.
-	 * @param employee1 An Optional possibly wrapping the first employee.
-	 * @param employee2 An Optional possibly wrapping the second employee.
-	 */
-	public static void checkEmployeesFound(String[] args, Optional<Employee> employee1,
-			Optional<Employee> employee2) {
-		final var employee1NotFound = employee1.isEmpty();
-		final var employee2NotFound = employee2.isEmpty();
-
-		if (employee1NotFound || employee2NotFound) {
-			System.err.println(String.format("Employee %s (%s) not found in input file %s",
-					firstEmployeeName,
-					args[EMPLOYEE_1], filePath));
-			System.err.println(String.format("Employee %s (%s) not found in input file %s",
-					secondEmployeeName,
-					args[EMPLOYEE_2], filePath));
-			System.exit(EXIT_FAILURE);
-		}
 	}
 
 	/**
